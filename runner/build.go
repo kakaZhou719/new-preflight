@@ -16,13 +16,21 @@ package runner
 
 import (
 	"preflight/checker"
+	"preflight/checker/cluster/api/types"
 )
 
 func BuildInitCheckers() []checker.Interface {
 	return []checker.Interface{
-		checker.PortCheck{Port: 6443},
-		checker.NumCPUCheck{NumCPU: 2},
-		checker.MemCheck{Mem: 1700},
+		checker.ClusterCheck{
+			AuthInfo: types.ClusterInfoBrief{
+				SshUser:     "root",
+				SshPassword: "Seadent123",
+				Hosts:       []string{"172.16.0.198"},
+			},
+		},
+		//checker.PortCheck{Port: 6443},
+		//checker.NumCPUCheck{NumCPU: 2},
+		//checker.MemCheck{Mem: 1700},
 		checker.OsCheck{
 			OSType:         "linux",
 			OSDistribution: []string{"ubuntu", "centos"},

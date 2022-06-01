@@ -14,6 +14,8 @@
 
 package strings
 
+import "strings"
+
 func NotIn(key string, slice []string) bool {
 	for _, s := range slice {
 		if key == s {
@@ -21,4 +23,18 @@ func NotIn(key string, slice []string) bool {
 		}
 	}
 	return true
+}
+func StringFilterAllLetters(str string) string {
+	return strings.Map(func(r rune) rune {
+		if r > '9' || r < '0' {
+			return -1
+		}
+		return r
+	}, str)
+}
+func IPFormat(host string) string {
+	if strings.IndexRune(host, ':') < 0 {
+		return host
+	}
+	return strings.Split(host, ":")[0]
 }

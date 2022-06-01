@@ -89,3 +89,47 @@ func TestNewCheckRunnerWithIgnore(t *testing.T) {
 
 	fmt.Println(string(responseJSON))
 }
+
+func TestNewCheckRunnerWithSkip(t *testing.T) {
+	list := []checker.Interface{
+		checker.PortCheck{Port: 34442424},
+		checker.NumCPUCheck{NumCPU: 2},
+		checker.FileExistingCheck{Path: "/code/preflight/cmd/main.go"},
+		checker.PortCheck{Port: 90},
+	}
+	r, err := runner.NewCheckRunner(list, runner.WithSkips([]string{"FileExisting"}))
+
+	if err != nil {
+		t.Errorf("failed to init runner err: %s", err)
+	}
+	resp := result.NewDefaultFormatter(r.Execute()).Format(result.WithIgnores([]string{"Port", "FileExisting"}))
+
+	responseJSON, err := json.MarshalIndent(resp, "", "    ")
+	if err != nil {
+		t.Errorf("format json failed:%v\n", err)
+	}
+
+	fmt.Println(string(responseJSON))
+}
+
+func TestNewCheckRunnerWithToleration(t *testing.T) {
+	list := []checker.Interface{
+		checker.PortCheck{Port: 34442424},
+		checker.NumCPUCheck{NumCPU: 2},
+		checker.FileExistingCheck{Path: "/code/preflight/cmd/main.go"},
+		checker.PortCheck{Port: 90},
+	}
+	r, err := runner.NewCheckRunner(list, runner.WithToleration(true))
+
+	if err != nil {
+		t.Errorf("failed to init runner err: %s", err)
+	}
+	resp := result.NewDefaultFormatter(r.Execute()).Format(result.WithIgnores([]string{"Port", "FileExisting"}))
+
+	responseJSON, err := json.MarshalIndent(resp, "", "    ")
+	if err != nil {
+		t.Errorf("format json failed:%v\n", err)
+	}
+
+	fmt.Println(string(responseJSON))
+}
