@@ -16,6 +16,5 @@ jobs:
       - name: write release drafter to file
         shell: bash
         run: |
-            echo "::set-output : ${{steps.drafter.outputs.body}}"
             echo "${{steps.drafter.outputs.body}}" >> release_note.md
             cat release_note.md
