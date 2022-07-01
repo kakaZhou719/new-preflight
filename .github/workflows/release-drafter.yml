@@ -1,11 +1,21 @@
 name: Release Drafter
 
-on: [ push, pull_request ]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   update_release_draft:
     runs-on: ubuntu-latest
     steps:
       - uses: release-drafter/release-drafter@v5
+        id: drafter
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: write release drafter to file
+          shell: bash
+          run: |
+            echo "::set-output : ${{steps.drafter.outputs.body}}"
+            echo ${{steps.drafter.outputs.body}} >> release_note.md
+            cat release_note.md
