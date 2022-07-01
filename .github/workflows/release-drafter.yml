@@ -14,8 +14,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: write release drafter to file
-          shell: bash
-          run: |
+        shell: bash
+        run: |
             echo "::set-output : ${{steps.drafter.outputs.body}}"
             echo ${{steps.drafter.outputs.body}} >> release_note.md
             cat release_note.md
